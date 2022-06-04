@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-#9y+#&t#24#m$mg!t&i58#&q=^=uz_&7q^!1t$43r=0vnbv@h2
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "library-manage-syst"
+    "library-manage-syst.herokuapp.com"
 ]
 
 
