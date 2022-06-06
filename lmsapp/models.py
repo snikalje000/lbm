@@ -1,31 +1,52 @@
 from django.db import models
+from django.contrib.auth.models import User
+from datetime import datetime,timedelta
 
-# Create your models here.
-class ModelBase(type):
-    """
-    Metaclass for all models.
-    """
-    def __new__(cls, name, bases, attrs):
-        super_new = super(ModelBase, cls).__new__
+class StudentExtra(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    enrollment = models.CharField(max_length=40)
+    branch = models.CharField(max_length=40)
+    #used in issue book
+    def __str__(self):
+        return self.user.first_name+'['+str(self.enrollment)+']'
+    @property
+    def get_name(self):
+        return self.user.first_name
+    @property
+    def getuserid(self):
+        return self.user.id
 
-        # Also ensure initialization is only performed for subclasses of Model
-        # (excluding Model class itself).
-        parents = [b for b in bases if isinstance(b, ModelBase)]
-        if not parents:
-            return super_new(cls, name, bases, attrs)
 
-        # Create the class.
-        module = attrs.pop('__module__')
-        new_class = super_new(cls, name, bases, {'__module__': module})
-       
-        # <========== THE CODE BELLOW SHOULD BE ADDED ONLY ======>>
+class Book(models.Model):
+    catchoice= [
+        ('education', 'Education'),
+        ('entertainment', 'Entertainment'),
+        ('comics', 'Comics'),
+        ('biography', 'Biography'),
+        ('history', 'History'),
+        ('novel', 'Novel'),
+        ('fantasy', 'Fantasy'),
+        ('thriller', 'Thriller'),
+        ('romance', 'Romance'),
+        ('scifi','Sci-Fi')
+        ]
+    name=models.CharField(max_length=30)
+    isbn=models.PositiveIntegerField()
+    author=models.CharField(max_length=40)
+    category=models.CharField(max_length=30,choices=catchoice,default='education')
+    def __str__(self):
+        return str(self.name)+"["+str(self.isbn)+']'
 
-        new_attrs = {'__module__': module}
-        classcell = attrs.pop('__classcell__', None)
-        if classcell is not None:
-            new_attrs['__classcell__'] = classcell
-        new_class = super_new(cls, name, bases, new_attrs)
 
-        # <========== THE CODE ABOVE SHOULD BE ADDED ONLY ======>>
-
-        # the rest of the class .....
+def get_expiry():
+    return datetime.today() + timedelta(days=15)
+class IssuedBook(models.Model):
+    #moved this in forms.py
+    #enrollment=[(student.enrollment,str(student.get_name)+' ['+str(student.enrollment)+']') for student in StudentExtra.objects.all()]
+    enrollment=models.CharField(max_length=30)
+    #isbn=[(str(book.isbn),book.name+' ['+str(book.isbn)+']') for book in Book.objects.all()]
+    isbn=models.CharField(max_length=30)
+    issuedate=models.DateField(auto_now=True)
+    expirydate=models.DateField(default=get_expiry)
+    def __str__(self):
+        return self.enrollment
