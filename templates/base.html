@@ -8,7 +8,9 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+    
+    <link rel="stylesheet" href="./css/style.css">
+<script src="./js/basejs.js"></script>
 
     <title>LMS PROJECT</title>
 </head>
@@ -26,14 +28,18 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
+                <div class="button-box">
+                    <div id="btn">
                     <li class="nav-item">
-                        <a class="nav-link" href="/adminclick">Admin Panel</a>
+                        <button type="button" class="toggle-btn" onClick="leftClick()">
+                        <a class="nav-link" href="/adminclick">Admin Panel</a></button>
                     </li>
                     <li class="nav-item">
                         <button type="button" class="toggle-btn" onclick="rightClick()">
-                        <a class="nav-link" href="/studentpanel">Student Panel</a>
+                        <a class="nav-link" href="/studentpanel">Student Panel</a></button>
                     </li>
-              
+                </div>
+            </div>
                 <!-- <li class="nav-item">
                     <a class="nav-link" href="/addbook">Add Book</a>
                 </li>
